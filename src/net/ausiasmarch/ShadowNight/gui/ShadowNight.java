@@ -38,7 +38,6 @@ import net.ausiasmarch.ShadowNight.sound.WavPlayer;
 
 public class ShadowNight extends Canvas implements GameWindow {
     /* La ventana principal de juego */
-
     private JFrame frame;
     /* Un doble bufer para acelerar la renderizacion */
     private BufferStrategy strategy;
@@ -90,8 +89,7 @@ public class ShadowNight extends Canvas implements GameWindow {
     private List<String> spritesPlayerCoheteLeft;
     private List<String> spritesPlayerCoheteRight;
     private List<String> spritesPlayerCohete;
-    private List<String> shadowsNames;
-    private int contador = 10;
+    private int contador = 60;
 
     public ShadowNight() {
         // La Ventana de juego    
@@ -286,7 +284,7 @@ public class ShadowNight extends Canvas implements GameWindow {
             shadowsLevel2();
         }
         if (screen == ScreenStatus.NEXT_LEVELFINAL) {
-            shadowsLevel2();
+            shadowsLevelFinal();
         }
     }
 
@@ -331,15 +329,60 @@ public class ShadowNight extends Canvas implements GameWindow {
         }
     }
 
+    public void shadowsLevelFinal() {
+        List<Integer> types = new ArrayList<>(); // Lista de tipos
+        int type = 0;
+        int columns = Aleatory.nextInt(MIN_COLS, MAX_COLS);
+
+        initialShadows = shadowsCount = columns; // numero de shadows por oleada
+
+        List<List<String>> shadowNames;
+        shadowNames = ImageUtils.getListOfListNames(Arrays.asList(SHADOWS_FIRE), Arrays.asList(SHADOW_FRAMES));
+
+        do {
+            type = Aleatory.nextInt(2);  // Obtiene un tipo aleatorio  
+        } while (types.contains(type));
+
+        types.add(type);  // Añade el tipo a la lista de tipos
+
+        for (int j = 0; j < columns; j++) {
+            // Crea un shadow con su lista de imagenes de frames segun su color        
+            shadow = new Shadow(this, shadowNames.get(type));
+            // Lo pone en el escenario
+            shadow.setStage(stage);
+            //SEGUN EL SHADOW SE PONE TRANSPARENCIA
+            if (type == 0) {
+                shadow.setTranslucent(0.50f);
+            }
+            // Duracion de cada frame          
+            shadow.setFrameDuration(DURATION_FRAMES_SHADOW);
+            // Establece la Puntuacion segun el shadow
+            shadow.setScore(Score.values()[type].getValue());
+            // Coordenadas x e y 
+            shadow.setX(Aleatory.nextInt(stageX + 10, getWidth() - shadow.getWidth()));
+            shadow.setY(stageY - shadow.getHeight() * 2);
+
+            shadow.setVx(0);
+            shadow.setVy(0);
+
+            // Añade el enemigo a la lista de actores
+            addActor(shadow);
+        }
+    }
+
     public void returnShadows() {
         List<Integer> types = new ArrayList<>();    // Lista de tipos
         int type = 0;
         int columns = 1;
 
         initialShadows = shadowsCount = columns; // numero de shadows por oleada
-
         List<List<String>> shadowNames;
-        shadowNames = ImageUtils.getListOfListNames(Arrays.asList(SHADOWS), Arrays.asList(SHADOW_FRAMES));
+
+        if (screen == ScreenStatus.FINAL) {
+            shadowNames = ImageUtils.getListOfListNames(Arrays.asList(SHADOWS_FIRE), Arrays.asList(SHADOW_FRAMES));
+        } else {
+            shadowNames = ImageUtils.getListOfListNames(Arrays.asList(SHADOWS), Arrays.asList(SHADOW_FRAMES));
+        }
 
         do {
             type = Aleatory.nextInt(2);  // Obtiene un tipo aleatorio  
@@ -374,18 +417,20 @@ public class ShadowNight extends Canvas implements GameWindow {
     }
 
     public void moveShadow() {
-        /* int value = Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX);
-         int direccion = Aleatory.nextInt(-2, 2);
-         Point speed = getAleatorySpeed(value);
-         shadow.setVx(speed.x * direccion);
-         shadow.setVy(speed.y);*/
 
         for (int j = 0; j < actors.size(); j++) {
             Actor a = actors.get(j);
             if (a instanceof Shadow) {
+                //Determina la direccion horizontal
                 int direccion = Aleatory.nextInt(-2, 2);
-                a.setVx(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX) * direccion);
-                a.setVy(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX));
+                //si el nivel es el final la velocidad en el eje x aumenta
+                if (screen == ScreenStatus.FINAL) {
+                    a.setVx(Aleatory.nextInt(SHADOW_SPEED_MIN * 3, SHADOW_SPEED_MAX * 3) * direccion);
+                    a.setVy(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX));
+                } else {
+                    a.setVx(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX) * direccion);
+                    a.setVy(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX));
+                }
 
             }
         }
@@ -403,35 +448,22 @@ public class ShadowNight extends Canvas implements GameWindow {
             if (contador == 0 && screen == ScreenStatus.GAME) {
                 timer.stop();
                 notifyNextLevel();
-                contador = 10;
+                contador = 60;
             }
 
             if (contador == 0 && screen == ScreenStatus.LEVEL2) {
                 timer.stop();
                 notifyLevelFinal();
-                contador = 10;
+                contador = 60;
             }
 
             if (contador == 0 && screen == ScreenStatus.FINAL) {
                 timer.stop();
                 notifyWinner();
-                contador = 10;
+                contador = 60;
             }
         }
     });
-
-    /**
-     * Obtiene una velocidad aleatoria
-     */
-    private Point getAleatorySpeed(int value) {
-        Point speed = new Point();
-        do {
-            speed.x = (Aleatory.nextInt(3) - 1 * value);
-            speed.y = (Aleatory.nextInt(3) + 1) * value;
-        } while (speed.x == 0 && speed.y == 0);
-
-        return speed;
-    }
 
     /**
      * Añade un nuevo actor a la lista de actores
@@ -477,7 +509,7 @@ public class ShadowNight extends Canvas implements GameWindow {
         message = SpriteCache.get().getSprite(GAMEOVER_GOT);
         screen = ScreenStatus.GAME_OVER;
         timer.stop();
-        contador = 10;
+        contador = 60;
 
     }
 
@@ -490,7 +522,7 @@ public class ShadowNight extends Canvas implements GameWindow {
         message = SpriteCache.get().getSprite(LEVEL_2);
         screen = ScreenStatus.NEXT_LEVEL;
         timer.stop();
-        contador = 10;
+        contador = 60;
         nextLevel2();
 
     }
@@ -504,7 +536,7 @@ public class ShadowNight extends Canvas implements GameWindow {
         message = SpriteCache.get().getSprite(LEVEL_FINAL);
         screen = ScreenStatus.NEXT_LEVELFINAL;
         timer.stop();
-        contador = 10;
+        contador = 60;
         nextLevelFinal();
     }
 
@@ -516,7 +548,7 @@ public class ShadowNight extends Canvas implements GameWindow {
         message = SpriteCache.get().getSprite(GAMEOVER_GOT);
         screen = ScreenStatus.GAME_OVER;
         timer.stop();
-        contador = 10;
+        contador = 60;
         MP3Player.stop();
         WavPlayer.play(PERDIDO);
     }
@@ -531,7 +563,7 @@ public class ShadowNight extends Canvas implements GameWindow {
         message = SpriteCache.get().getSprite(GAMEOVER_WIN);
         screen = ScreenStatus.GAME_OVER;
         timer.stop();
-        contador = 10;
+        contador = 60;
         MP3Player.stop();
         WavPlayer.play(GANADO);
     }
@@ -555,8 +587,13 @@ public class ShadowNight extends Canvas implements GameWindow {
                 if (a instanceof Shadow) {
                     if (a != shadowDeath) {
                         int direccion = Aleatory.nextInt(-2, 2);
-                        a.setVx(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX) * direccion);
-                        a.setVy(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX));
+                        if (screen == ScreenStatus.FINAL) {
+                            a.setVx(Aleatory.nextInt(SHADOW_SPEED_MIN * 3, SHADOW_SPEED_MAX * 3) * direccion);
+                            a.setVy(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX));
+                        } else {
+                            a.setVx(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX) * direccion);
+                            a.setVy(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX));
+                        }
                     }
                 }
             }
@@ -832,8 +869,8 @@ public class ShadowNight extends Canvas implements GameWindow {
         long currentTime;
 
         // Si estamos la pantalla GAME (estamos jugando)
-        if (screen == ScreenStatus.GAME || screen == ScreenStatus.LEVEL2 || 
-                screen == ScreenStatus.FINAL) {
+        if (screen == ScreenStatus.GAME || screen == ScreenStatus.LEVEL2
+                || screen == ScreenStatus.FINAL) {
             // Obtenemos el instante de tiempo actual 
             currentTime = getCurrentTimeMillis();
             // Frecuencia de actualizacion de la logica juego
@@ -930,7 +967,7 @@ public class ShadowNight extends Canvas implements GameWindow {
                 movementPlayer(); // Resolvemos el movimiento del player       
                 tryToFire();    // Resolvemos los disparos del player
                 break;
-                
+
             case NEXT_LEVEL:
                 // Si pulso ESCAPE
                 if (Keyboard.isPressed(KeyEvent.VK_ESCAPE)) {
@@ -939,19 +976,19 @@ public class ShadowNight extends Canvas implements GameWindow {
                 // Si pulso ENTER
                 if (Keyboard.isPressed(KeyEvent.VK_ENTER)) {
                     screen = ScreenStatus.LEVEL2;     // Pantalla de juego                 
-                    initStage(SPACE);
+                    initStage(SPACE_LEVEL2);
                     moveShadow();
                     WavPlayer.play(COLISION);
                     playTheme(LEVEL2_THEME);
                 }
                 break;
-                
+
             case LEVEL2:
                 movementPlayer(); // Resolvemos el movimiento del player              
                 tryToFire();    // Resolvemos los disparos del player
                 break;
-                
-                case NEXT_LEVELFINAL:
+
+            case NEXT_LEVELFINAL:
                 // Si pulso ESCAPE
                 if (Keyboard.isPressed(KeyEvent.VK_ESCAPE)) {
                     gameRunning = false; //System.exit(0); // Salimos del juego
@@ -970,7 +1007,7 @@ public class ShadowNight extends Canvas implements GameWindow {
                 movementPlayer(); // Resolvemos el movimiento del player              
                 tryToFire();    // Resolvemos los disparos del player
                 break;
-                
+
             // Pantalla GAMEOVER    
             case GAME_OVER:
                 sleep(500);

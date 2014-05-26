@@ -33,11 +33,12 @@ public interface GameWindow {
     // ACTORES ..............................................................   
 
     // Filas y columnas de shadows
-    public final int MIN_COLS = 6;
-    public final int MAX_COLS = 8;
+    public final int MIN_COLS = 10;
+    public final int MAX_COLS = 15;
 
     // Archivos de imagen
     public final String[] SHADOWS = {PATH_IMAGE + "fantasma.png", PATH_IMAGE + "spider.png"};
+    public final String[] SHADOWS_FIRE = {PATH_IMAGE + "fantasmafuego.png", PATH_IMAGE + "spiderfuego.png"};
     public final String PLAYER = PATH_IMAGE + "PlayerSentadillas.png";
     public final String PLAYER_DRC = PATH_IMAGE + "Player_Drc.png";
     public final String PLAYER_IZQ = PATH_IMAGE + "Player_Izq.png";
@@ -88,10 +89,10 @@ public interface GameWindow {
     public final String INTRO = PATH_IMAGE + "intro1.png";   // Escenario
     public final String SPACE = PATH_IMAGE + "fondo1.png";   // Escenario
     public final String SPACE_LEVEL2 = PATH_IMAGE + "fondo2.png";   // Escenario final
-    public final String SPACE_FINAL = PATH_IMAGE + "fondo4.png";   // Escenario final
+    public final String SPACE_FINAL = PATH_IMAGE + "fondo3.png";   // Escenario final
     public final String HOUSE = PATH_IMAGE + "house.png";   // La tierra
     public final String CONTROL = PATH_IMAGE + "controles.png"; // Controles
-    
+
     // BARRA DE ESTADO .....................................................
     public final int STATUS_BAR = 67;      // Altura barra de estado
     public final int HEIGHT_BASE = 3;      // Altura linea base
