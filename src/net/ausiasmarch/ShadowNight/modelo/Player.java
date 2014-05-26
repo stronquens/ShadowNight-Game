@@ -21,8 +21,7 @@ public class Player extends Actor {
     public final int MAX_BOMBS = 8;               // Maximo de bombas
     public static final int MAX_SHIELDS = 500;    // Maximo de escudos   
     private int clusterBombs;                     // Contador de bombas 
-    private List<String> missileNames;            // Lista de misiles 
-    private List<List<String>> bombNames;         // Lista de Bombas    
+    private List<String> missileNames;            // Lista de misiles    
     private long lastFire = 0;                    // ultimo disparo 
     private long firingInterval = 300;            // Intervalo entre disparos 
     private List<String> explosionNames;
@@ -33,8 +32,6 @@ public class Player extends Actor {
     public Player(GameWindow gw, List<String> names) {
         super(names);
         window = gw;
-        
-        //Keyboard.init();
         
         clusterBombs = MAX_BOMBS;
         score = 0;
@@ -65,11 +62,7 @@ public class Player extends Actor {
             vx = 0;
             y = stage.y + stage.height - height - 15;
         }
-        /* if (y + height > (stage.y + stage.height - 180)) {
-         vx = 0;
-         y = stage.y + stage.height - height - 180;
-         }*/
-
+        
         // Mueve este jugador
         super.move(dt);
     }
@@ -102,7 +95,7 @@ public class Player extends Actor {
     }
 
     /**
-     * Establece el numero de bombas de fragmentacion que se usaraan
+     * Establece el numero de gritones que se usaraan
      *
      * @param clusterBombs
      */
@@ -120,7 +113,7 @@ public class Player extends Actor {
     }
 
     /**
-     * Establece la lista de los nombres de las bommbas usadas
+     * Establece la lista de los nombres de los gritones usadas
      *
      * @param bombImageNames
      */

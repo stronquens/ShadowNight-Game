@@ -38,6 +38,7 @@ import net.ausiasmarch.ShadowNight.sound.WavPlayer;
 
 public class ShadowNight extends Canvas implements GameWindow {
     /* La ventana principal de juego */
+
     private JFrame frame;
     /* Un doble bufer para acelerar la renderizacion */
     private BufferStrategy strategy;
@@ -49,13 +50,13 @@ public class ShadowNight extends Canvas implements GameWindow {
     private List<Actor> deleteActors = new ArrayList<>();
     /* Rectangulo con los limites del escenario */
     private Rectangle stage;
-    /* Contador de aliens */
+    /* Contador de Shadows */
     private int shadowsCount = 0;
     /* Tiempo en ms usado para el movimiento */
     private long dt;
     /* True mientras el juego se esta ejecutando */
     private boolean gameRunning = true;
-    /* Aliens iniciales */
+    /* Shadows iniciales */
     private int initialShadows;
     /* el jugador */
     private Player player;
@@ -65,7 +66,7 @@ public class ShadowNight extends Canvas implements GameWindow {
     private Smoke humo;
     //Los shadows
     private Shadow shadow;
-    /* La tierra */
+    /* El pueblo */
     private House house;
     /* Sprite de una "pieza" del fondo del escenario */
     private BufferedImage backgroundTile;
@@ -83,12 +84,14 @@ public class ShadowNight extends Canvas implements GameWindow {
     private long frames = 0;
     // Ultimo instante de tiempo en ms
     private long lastTime = timeFps = getCurrentTimeMillis();
+    //Animaciones
     private List<String> spritesPlayer;
     private List<String> spritesPlayerRight;
     private List<String> spritesPlayerLeft;
     private List<String> spritesPlayerCoheteLeft;
     private List<String> spritesPlayerCoheteRight;
     private List<String> spritesPlayerCohete;
+    //El tiempo del reloj
     private int contador = 60;
 
     public ShadowNight() {
@@ -260,6 +263,7 @@ public class ShadowNight extends Canvas implements GameWindow {
                 shadow = new Shadow(this, shadowNames.get(type));
                 // Lo pone en el escenario
                 shadow.setStage(stage);
+                //Añade transparencia segun el tipo
                 if (type == 0) {
                     shadow.setTranslucent(0.50f);
                 }
@@ -279,15 +283,19 @@ public class ShadowNight extends Canvas implements GameWindow {
 
             }
         }
-
+        // Si el nivel es el 2 se inician los actores del nivel 2
         if (screen == ScreenStatus.NEXT_LEVEL) {
             shadowsLevel2();
         }
+        // Si el nivel es el final se inician los actores del nivel final
         if (screen == ScreenStatus.NEXT_LEVELFINAL) {
             shadowsLevelFinal();
         }
     }
 
+    /**
+     * Inicia los shadows del nivel 2
+     */
     public void shadowsLevel2() {
         List<Integer> types = new ArrayList<>(); // Lista de tipos
         int type = 0;
@@ -328,6 +336,9 @@ public class ShadowNight extends Canvas implements GameWindow {
             addActor(shadow);
         }
     }
+    /**
+     * Inicia los shadows del nivel final 
+     */
 
     public void shadowsLevelFinal() {
         List<Integer> types = new ArrayList<>(); // Lista de tipos
@@ -369,6 +380,9 @@ public class ShadowNight extends Canvas implements GameWindow {
             addActor(shadow);
         }
     }
+    /**
+     * Devuelve los shadows muertos al escenario
+     */ 
 
     public void returnShadows() {
         List<Integer> types = new ArrayList<>();    // Lista de tipos
@@ -377,8 +391,10 @@ public class ShadowNight extends Canvas implements GameWindow {
 
         initialShadows = shadowsCount = columns; // numero de shadows por oleada
         List<List<String>> shadowNames;
-
+        
+        // Segun si la pantalla es la final ejecuta una naimacion para los shadows
         if (screen == ScreenStatus.FINAL) {
+            // Si es el nivel final ejecuta la animacion de shadows con fuego
             shadowNames = ImageUtils.getListOfListNames(Arrays.asList(SHADOWS_FIRE), Arrays.asList(SHADOW_FRAMES));
         } else {
             shadowNames = ImageUtils.getListOfListNames(Arrays.asList(SHADOWS), Arrays.asList(SHADOW_FRAMES));
@@ -423,19 +439,19 @@ public class ShadowNight extends Canvas implements GameWindow {
             if (a instanceof Shadow) {
                 //Determina la direccion horizontal
                 int direccion = Aleatory.nextInt(-2, 2);
-                //si el nivel es el final la velocidad en el eje x aumenta
+                //si el nivel es el final la velocidad en el eje x aumenta para los shadows
                 if (screen == ScreenStatus.FINAL) {
+                    //La velocidad se multiplica en 3 en el nivel final por que se estan quemando
                     a.setVx(Aleatory.nextInt(SHADOW_SPEED_MIN * 3, SHADOW_SPEED_MAX * 3) * direccion);
                     a.setVy(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX));
                 } else {
                     a.setVx(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX) * direccion);
                     a.setVy(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX));
                 }
-
             }
         }
-
     }
+    
     /**
      * Contra Reloj
      */
@@ -444,7 +460,7 @@ public class ShadowNight extends Canvas implements GameWindow {
         public void actionPerformed(ActionEvent ae) {
 
             contador--;
-
+// Reinicia el tiempo cada vez que se pasa de nivel
             if (contador == 0 && screen == ScreenStatus.GAME) {
                 timer.stop();
                 notifyNextLevel();
@@ -494,7 +510,10 @@ public class ShadowNight extends Canvas implements GameWindow {
     public Player getPlayer() {
         return player;
     }
-
+    /**
+     * Obtiene las casas
+     * @return 
+     */
     @Override
     public House getHouse() {
         return house;
@@ -514,7 +533,7 @@ public class ShadowNight extends Canvas implements GameWindow {
     }
 
     /**
-     * Notifica que hay que cambiar de nivel
+     * Notifica que hay que cambiar de nivel al 2º nivel
      */
     @Override
     public void notifyNextLevel() {
@@ -528,7 +547,7 @@ public class ShadowNight extends Canvas implements GameWindow {
     }
 
     /**
-     * Notifica que hay que cambiar de nivel
+     * Notifica que hay que cambiar de nivel al nivel final
      */
     //@Override
     public void notifyLevelFinal() {
@@ -586,7 +605,9 @@ public class ShadowNight extends Canvas implements GameWindow {
                 Actor a = actors.get(j);
                 if (a instanceof Shadow) {
                     if (a != shadowDeath) {
+                        // Direccion en el je x aleatoria
                         int direccion = Aleatory.nextInt(-2, 2);
+                        //Si es el nivel final la velocidad en x se multiplica por 3
                         if (screen == ScreenStatus.FINAL) {
                             a.setVx(Aleatory.nextInt(SHADOW_SPEED_MIN * 3, SHADOW_SPEED_MAX * 3) * direccion);
                             a.setVy(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX));
@@ -598,7 +619,8 @@ public class ShadowNight extends Canvas implements GameWindow {
                 }
             }
         }
-        // Si cuando muere un shadow el numero de aparicion es 1 sale una cesta
+        /* Si cuando muere un shadow el numero de aparicion es 1 y el 
+        tiempo es menor de 30s sale una cesta*/
         if (aparicion == 1 && contador <= 30) {
             // El Bonus...........................................................
             cesta = new PumpkinBasket(this, ImageUtils.getImagesNames(CALABAZA, 1));
@@ -685,7 +707,7 @@ public class ShadowNight extends Canvas implements GameWindow {
         displayStatusBarImage();
         displayScore();        // visualiza la puntuacion
         displayShields();      // visualizaa los escudos
-        displayGritones();        // visualiza las bombas  
+        displayGritones();     // visualiza los gritones
         displayTime();         // visualiza el tiempo
     }
 
@@ -781,9 +803,8 @@ public class ShadowNight extends Canvas implements GameWindow {
 
         String status_bar = ImageUtils.getImagesNames(STATUS_BAR_IMG, 1).get(0);
         BufferedImage sprite = SpriteCache.get().getSprite(status_bar);
-        int w, x, y;
+        int x, y;
 
-        w = getWidth() / 6;
         x = 5;
         y = getHeight() - STATUS_BAR + (STATUS_BAR / 2 - sprite.getHeight() / 2);
 
@@ -893,7 +914,6 @@ public class ShadowNight extends Canvas implements GameWindow {
                 }
 
                 // Actualizamos lastTime
-                //lastTime += LOGIC_TIME * loops;
                 timeFps += dt;
 
                 frames++;

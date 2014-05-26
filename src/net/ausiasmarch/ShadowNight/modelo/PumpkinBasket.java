@@ -12,7 +12,7 @@ import net.ausiasmarch.ShadowNight.util.ImageUtils;
 
 /**
  *
- * @author al038513
+ * @author Armando Maya y Jose M Coronado
  */
 public class PumpkinBasket extends Actor {
 
@@ -20,7 +20,7 @@ public class PumpkinBasket extends Actor {
     protected Shadow lastBasketCollided;
     /* True si puede disparar */
     protected boolean deadBasket;
-    /* Puntuacion de este shadow */
+    /* Numero de gritones que reabastece */
     private int score;
 
     /* Lista de nombres de explosion */
@@ -31,9 +31,8 @@ public class PumpkinBasket extends Actor {
     public PumpkinBasket(GameWindow gw, List<String> names) {
         super(names);
         window = gw;
-        frameDuration = DURATION_FRAMES_SHADOW;     // Duracion frame shadow
+        frameDuration = DURATION_FRAMES_SHADOW;// Duracion frame de la calabaza
         score = 8;
-        //lastBasketCollided = null;   // Aun no ha colisionado con otro shadow
         deadBasket = false;          // No ha sido eliminado
         explosionNames = ImageUtils.getImagesNames(EXPLOSION_B, EXPLOSION_B_FRAMES);
     }
@@ -53,15 +52,15 @@ public class PumpkinBasket extends Actor {
             // x = (stage.x + stage.width) - width;
         }
 
-        // Si el shadow fue eliminado y estamos en el ultimo fotograma, se desintegra
+        // Si la calabaza fue eliminada y estamos en el ultimo fotograma, se desintegra
         if (deadBasket == true && getFrameNumber() == getSpriteImages().size() - 1) {
-            // Lo añadimos a la lista de eliminados
+            // La añadimos a la lista de eliminados
             window.addRemove(this);
-            // El shadow ha sido eliminado
+            // La calabaza ha sido eliminada
             deadBasket = false;
         }
 
-        // Mueve este shadow
+        // Mueve esta calabaza
         super.move(dt);
     }
 
@@ -85,7 +84,7 @@ public class PumpkinBasket extends Actor {
 
     @Override
     /*
-     * Detecta la colision de este shadow con otro actor
+     * Detecta la colision de esta calabaza con otro actor
      * @param actor
      */
     public void collision(Actor actor) {
@@ -107,15 +106,19 @@ public class PumpkinBasket extends Actor {
 
         }
         if (actor instanceof Missile || actor instanceof CandyScreamer) {
+            // Si la calabaza colisiona la primera vez con el misil
             if (fallen == 0) {
                 window.addRemove(actor);
                 setSpriteImages(ImageUtils.getImagesNames(window.CESTA_CALABAZA, 1));              
                 WavPlayer.play(window.GRITO_GRAVE);
                 setFrameDuration(1);
+                // Situamos bien la nueva imagen
                 setX(this.getX() + 50);
                 setY(this.getY() + 100);
+                // Solo cae verticalmente
                 setVx(0);
                 setVy(200);
+                // Aumentamos el numero de veces q ha colisionado con el misil
                 fallen++;
             }
         }

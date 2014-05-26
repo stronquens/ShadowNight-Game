@@ -41,7 +41,6 @@ public class Shadow extends Actor {
         horizontalMovement = true;  // Al inicio mueve horizontalmente
         explosion = false;
 
- 
         explosionNames = ImageUtils.getImagesNames(EXPLOSION_B, EXPLOSION_B_FRAMES);
     }
 

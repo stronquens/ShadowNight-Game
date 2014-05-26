@@ -10,7 +10,7 @@ import static net.ausiasmarch.ShadowNight.modelo.GameWindow.*;
  * Bomb.java
  * Bomba de fragmentación
  *
- * @author Luis
+ * @author Armando Maya y Jose M Coronado
  *--------------------------------------------------------------------------
  */
 public class CandyScreamer extends Actor {
@@ -42,12 +42,12 @@ public class CandyScreamer extends Actor {
 
     @Override
     public void act(long dt) {
-        // Mueve esta bomba
+        // Mueve este griton
         super.move(dt);
 
         if (x < stage.x || x > stage.width
                 || y < stage.y || y > stage.height) {
-            window.addRemove(this); // Añade la bomba a la lista de actores a borrar   
+            window.addRemove(this); // Añade el griton a la lista de actores a borrar   
         }
 
     }
