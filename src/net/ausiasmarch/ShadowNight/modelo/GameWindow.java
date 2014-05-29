@@ -48,6 +48,7 @@ public interface GameWindow {
     public final String[] CARAMELO_GRITON1 = {PATH_IMAGE + "carameloGriton.png", PATH_IMAGE + "carameloGriton.png",
         PATH_IMAGE + "carameloGriton.png"};
     public final String SMOKE = PATH_IMAGE + "frame.png";
+    public final String BIG_SHADOW = PATH_IMAGE + "dark.png";
 
     public final String CARAMELO_GRITON = PATH_IMAGE + "carameloGriton.png";
     public final String STATUS_BAR_IMG = PATH_IMAGE + "status_bar_final.png";
@@ -64,6 +65,7 @@ public interface GameWindow {
     public final int PLAYER_SPEED = FRAMES_SECOND * 15;
     public final int MISSILE_SPEED = FRAMES_SECOND * 10;
     public final int BOMB_SPEED = FRAMES_SECOND * 20;
+    public int SHADOW_LOST_SHIELDS = 10;
 
     //Numero de frames
     public final int PLAYER_FRAMES = 20;
@@ -99,8 +101,6 @@ public interface GameWindow {
     public final int FONT_SIZE = 20;       // Altura texto    
     public final Color FPS_COLOR = Color.LIGHT_GRAY; // Color fps
 
-    public int LASER_LOST_SHIELDS = 10;    // Numero maximo de Escudos perdidos 
-    public int SHADOW_LOST_SHIELDS = 10;
     public final Color FONT_COLOR = new Color(1, 3, 40);     // Color texto
     public final Color SCORE_COLOR = new Color(212, 130, 82); // Color puntuacion   
     public final Color LSHIELD_COLOR = new Color(125, 1, 1); // Carga escudos
@@ -130,6 +130,10 @@ public interface GameWindow {
     public final static String GANADO = PATH_SOUND + "Ganada.wav";
     public final static String BOING = PATH_SOUND + "Boing.wav";
     public final static String GRITO_GRAVE = PATH_SOUND + "GritoGrave.wav";
+    public final static String ENGULLE = PATH_SOUND + "mastica.wav";
+    public final static String MASTICA = PATH_SOUND + "mastica2.wav";
+    public final static String YEAH = PATH_SOUND + "Yea.wav";
+    public final static String OOOO = PATH_SOUND + "Oo.wav";
 
     // METODOS DE NOTIFICACION ****************************************   
     // Añade un actor ala lista de actores 

@@ -89,17 +89,18 @@ public class PumpkinBasket extends Actor {
      */
     public void collision(Actor actor) {
         if (actor instanceof Player || actor instanceof House) {
-            playSound(COLISION);
             if (!deadBasket) {
                 if (actor instanceof Player) {
                     // Aumentamos la puntuacion del jugador
                     window.getPlayer().setClusterBombs(score);
                     deadBasket = true;
                     WavPlayer.stop(window.GRITO_GRAVE);
+                    WavPlayer.play(window.YEAH);
                 }
                 if (actor instanceof House) {
                     deadBasket = true;
                     WavPlayer.stop(window.GRITO_GRAVE);
+                    WavPlayer.play(window.OOOO);
                 }
 
             }
@@ -109,7 +110,7 @@ public class PumpkinBasket extends Actor {
             // Si la calabaza colisiona la primera vez con el misil
             if (fallen == 0) {
                 window.addRemove(actor);
-                setSpriteImages(ImageUtils.getImagesNames(window.CESTA_CALABAZA, 1));              
+                setSpriteImages(ImageUtils.getImagesNames(window.CESTA_CALABAZA, 1));
                 WavPlayer.play(window.GRITO_GRAVE);
                 setFrameDuration(1);
                 // Situamos bien la nueva imagen

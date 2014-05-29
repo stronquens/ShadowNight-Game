@@ -66,6 +66,8 @@ public class ShadowNight extends Canvas implements GameWindow {
     private Smoke humo;
     //Los shadows
     private Shadow shadow;
+    // Los shadows grandes
+    private BigShadow bigShadow;
     /* El pueblo */
     private House house;
     /* Sprite de una "pieza" del fondo del escenario */
@@ -336,10 +338,10 @@ public class ShadowNight extends Canvas implements GameWindow {
             addActor(shadow);
         }
     }
-    /**
-     * Inicia los shadows del nivel final 
-     */
 
+    /**
+     * Inicia los shadows del nivel final
+     */
     public void shadowsLevelFinal() {
         List<Integer> types = new ArrayList<>(); // Lista de tipos
         int type = 0;
@@ -380,10 +382,10 @@ public class ShadowNight extends Canvas implements GameWindow {
             addActor(shadow);
         }
     }
+
     /**
      * Devuelve los shadows muertos al escenario
-     */ 
-
+     */
     public void returnShadows() {
         List<Integer> types = new ArrayList<>();    // Lista de tipos
         int type = 0;
@@ -391,7 +393,7 @@ public class ShadowNight extends Canvas implements GameWindow {
 
         initialShadows = shadowsCount = columns; // numero de shadows por oleada
         List<List<String>> shadowNames;
-        
+
         // Segun si la pantalla es la final ejecuta una naimacion para los shadows
         if (screen == ScreenStatus.FINAL) {
             // Si es el nivel final ejecuta la animacion de shadows con fuego
@@ -451,7 +453,7 @@ public class ShadowNight extends Canvas implements GameWindow {
             }
         }
     }
-    
+
     /**
      * Contra Reloj
      */
@@ -510,9 +512,11 @@ public class ShadowNight extends Canvas implements GameWindow {
     public Player getPlayer() {
         return player;
     }
+
     /**
      * Obtiene las casas
-     * @return 
+     *
+     * @return
      */
     @Override
     public House getHouse() {
@@ -620,8 +624,8 @@ public class ShadowNight extends Canvas implements GameWindow {
             }
         }
         /* Si cuando muere un shadow el numero de aparicion es 1 y el 
-        tiempo es menor de 30s sale una cesta*/
-        if (aparicion == 1 && contador <= 30) {
+         tiempo es menor de 30s sale una cesta*/
+        if (aparicion == 1 && contador <= 40) {
             // El Bonus...........................................................
             cesta = new PumpkinBasket(this, ImageUtils.getImagesNames(CALABAZA, 1));
             cesta.setStage(stage);
@@ -631,6 +635,17 @@ public class ShadowNight extends Canvas implements GameWindow {
             cesta.setVx(SHADOW_SPEED_MIN);
             cesta.setVy(SHADOW_SPEED_MIN);
             addActor(cesta);
+        }
+        if (aparicion == 2 && screen == ScreenStatus.LEVEL2) { 
+            int direccion = Aleatory.nextInt(-2, 2);
+            bigShadow = new BigShadow(this, ImageUtils.getImagesNames(BIG_SHADOW, 5));
+            bigShadow.setStage(stage);
+            bigShadow.setFrameDuration(100);
+            bigShadow.setX(Aleatory.nextInt(stageX + 10, getWidth() - bigShadow.getWidth()));
+            bigShadow.setY(stageY - bigShadow.getHeight() * 2);
+            bigShadow.setVx(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX) * direccion);
+            bigShadow.setVy(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX));
+            addActor(bigShadow);
         }
 
     }

@@ -3,6 +3,7 @@ package net.ausiasmarch.ShadowNight.modelo;
 import java.awt.Rectangle;
 import java.util.List;
 import static net.ausiasmarch.ShadowNight.modelo.GameWindow.*;
+import net.ausiasmarch.ShadowNight.sound.WavPlayer;
 
 /*
  * -------------------------------------------------------------------------
@@ -54,7 +55,9 @@ public class CandyScreamer extends Actor {
 
     @Override
     public void collision(Actor actor) {
-
+       /* if (actor instanceof BigShadow) {
+            window.addRemove(this);
+        }*/
     }
 
 }
