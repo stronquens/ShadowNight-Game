@@ -11,18 +11,14 @@ import net.ausiasmarch.ShadowNight.util.ImageUtils;
 /**
  * ---------------------------------------------------------------------------
  * Curso Básico de desarrollo de VideoJuegos en Java 2D Shadow.java
- *
+ * Las sombras
  * @author Armando Maya y Jose M Coronado
  * ----------------------------------------------------------------------------
  */
 public class Shadow extends Actor {
 
-    /* Ultimo shadow colisionado */
-    protected Shadow lastShadowCollided;
     /* True si puede disparar */
     protected boolean deadShadow;
-    /* Movimieento horizontal solamente */
-    protected boolean horizontalMovement;
     /* Puntuacion de este shadow */
     private int score;
     /* explosion creada */
@@ -32,13 +28,10 @@ public class Shadow extends Actor {
 
     public Shadow(GameWindow gw, List<String> names) {
         super(names);
-        window = gw;
-        horizontalMovement = true; // Al inicio solo se mueven horizontalmente      
+        window = gw;    
         frameDuration = DURATION_FRAMES_SHADOW;     // Duracion frame shadow
         translucent = 1.0f;
-        lastShadowCollided = null;   // Aun no ha colisionado con otro shadow
         deadShadow = false;          // No ha sido eliminado
-        horizontalMovement = true;  // Al inicio mueve horizontalmente
         explosion = false;
 
         explosionNames = ImageUtils.getImagesNames(EXPLOSION_B, EXPLOSION_B_FRAMES);

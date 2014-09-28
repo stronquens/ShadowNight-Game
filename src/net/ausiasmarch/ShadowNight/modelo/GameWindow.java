@@ -33,8 +33,8 @@ public interface GameWindow {
     // ACTORES ..............................................................   
 
     // Filas y columnas de shadows
-    public final int MIN_COLS = 10;
-    public final int MAX_COLS = 15;
+    public final int MIN_COLS = 8;
+    public final int MAX_COLS = 10;
 
     // Archivos de imagen
     public final String[] SHADOWS = {PATH_IMAGE + "fantasma.png", PATH_IMAGE + "spider.png"};
@@ -103,8 +103,8 @@ public interface GameWindow {
 
     public final Color FONT_COLOR = new Color(1, 3, 40);     // Color texto
     public final Color SCORE_COLOR = new Color(212, 130, 82); // Color puntuacion   
-    public final Color LSHIELD_COLOR = new Color(125, 1, 1); // Carga escudos
-    public final Color DSHIELD_COLOR = new Color(1, 4, 30);  // Descarga escudos
+    public final Color LSHIELD_COLOR = new Color(102, 51, 0); // Carga escudos
+    public final Color DSHIELD_COLOR = new Color(128, 128, 128);  // Descarga escudos
     // Separacion entre filas
     public final double ALFA = 1.7;
 

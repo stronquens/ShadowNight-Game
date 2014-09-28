@@ -5,11 +5,11 @@ import java.util.List;
 import static net.ausiasmarch.ShadowNight.modelo.GameWindow.*;
 import net.ausiasmarch.ShadowNight.sound.WavPlayer;
 
-/*
+/**
  * -------------------------------------------------------------------------
  * Curso Básico de desarrollo de VideoJuegos en Java 2D
- * Bomb.java
- * Bomba de fragmentación
+ * CandyScreamer.java
+ * Caramelo Griton
  *
  * @author Armando Maya y Jose M Coronado
  *--------------------------------------------------------------------------

@@ -11,8 +11,13 @@ import net.ausiasmarch.ShadowNight.sound.WavPlayer;
 import net.ausiasmarch.ShadowNight.util.ImageUtils;
 
 /**
+ * -------------------------------------------------------------------------
+ * Curso Básico de desarrollo de VideoJuegos en Java 2D
+ * BigShadow.java
+ * La gran sombra
  *
- * @author Armando
+ * @author Armando Maya y Jose M Coronado
+ *--------------------------------------------------------------------------
  */
 public class BigShadow extends Actor {
 
@@ -25,7 +30,7 @@ public class BigShadow extends Actor {
     /* Lista de nombres de explosion */
     protected List<String> explosionNames;
     //Numero de veces que hay que atacarle
-    protected int life = 20;
+    protected int life = 10;
     // Reduce las bombas a cero
     int bombs = 0;
 

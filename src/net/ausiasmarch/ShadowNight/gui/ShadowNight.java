@@ -453,7 +453,6 @@ public class ShadowNight extends Canvas implements GameWindow {
             }
         }
     }
-
     /**
      * Contra Reloj
      */
@@ -617,7 +616,7 @@ public class ShadowNight extends Canvas implements GameWindow {
                             a.setVy(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX));
                         } else {
                             a.setVx(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX) * direccion);
-                            a.setVy(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX));
+                            a.setVy(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX) * 2);
                         }
                     }
                 }
@@ -636,15 +635,21 @@ public class ShadowNight extends Canvas implements GameWindow {
             cesta.setVy(SHADOW_SPEED_MIN);
             addActor(cesta);
         }
-        if (aparicion == 2 && screen == ScreenStatus.LEVEL2) { 
+        if (aparicion == 2 && (screen == ScreenStatus.LEVEL2 || screen == ScreenStatus.FINAL)) {
             int direccion = Aleatory.nextInt(-2, 2);
             bigShadow = new BigShadow(this, ImageUtils.getImagesNames(BIG_SHADOW, 5));
             bigShadow.setStage(stage);
             bigShadow.setFrameDuration(100);
             bigShadow.setX(Aleatory.nextInt(stageX + 10, getWidth() - bigShadow.getWidth()));
             bigShadow.setY(stageY - bigShadow.getHeight() * 2);
-            bigShadow.setVx(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX) * direccion);
-            bigShadow.setVy(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX));
+            if (screen == ScreenStatus.FINAL) {
+                bigShadow.setVx(Aleatory.nextInt(SHADOW_SPEED_MIN * 3, SHADOW_SPEED_MAX * 3) * direccion);
+                bigShadow.setVy(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX));
+            } else {
+                bigShadow.setVx(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX) * direccion);
+                bigShadow.setVy(Aleatory.nextInt(SHADOW_SPEED_MIN, SHADOW_SPEED_MAX));
+            }
+
             addActor(bigShadow);
         }
 
@@ -769,7 +774,7 @@ public class ShadowNight extends Canvas implements GameWindow {
         g2D.setPaint(FONT_COLOR);              // color con el que se pintara
         wt = fm.stringWidth("Score:");         // ancho de este texto  
 
-        x = (int) (w / 2 - wt / 2) / 2;
+        x = (int) (w / 2 - wt / 2) / 2 + 50;
         y = (getHeight() - STATUS_BAR) + (STATUS_BAR / 2) + fs / 3;
         g2D.drawString("Score:", x, y);
         g2D.setPaint(SCORE_COLOR);
@@ -795,12 +800,12 @@ public class ShadowNight extends Canvas implements GameWindow {
         g2D.setPaint(FONT_COLOR);            // color con el que se pintara
         int wt = fm.stringWidth("Life: ");  // ancho de este texto  
 
-        x = (int) (w + (w / 2 - wt / 2)) - 75;
+        x = (int) (w + (w / 2 - wt / 2)) - 5;
         y = (getHeight() - STATUS_BAR) + (STATUS_BAR / 2) + fs / 3;
         g2D.drawString("Life: ", x, y);
 
         ws = 2 * w;             // ancho de la barra de shields       
-        x = (2 * w) - 100;              // coord. x barra de shields 
+        x = (2 * w) - 50;              // coord. x barra de shields 
         // coord. y barra shield
         y = (getHeight() - STATUS_BAR) + (STATUS_BAR / 2 - hs / 2);
         g2D.setPaint(DSHIELD_COLOR);     // descargado

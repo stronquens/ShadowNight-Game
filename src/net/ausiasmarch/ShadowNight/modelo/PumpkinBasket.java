@@ -11,8 +11,13 @@ import net.ausiasmarch.ShadowNight.sound.WavPlayer;
 import net.ausiasmarch.ShadowNight.util.ImageUtils;
 
 /**
+ * -------------------------------------------------------------------------
+ * Curso Básico de desarrollo de VideoJuegos en Java 2D
+ * PumpkinBasket.java
+ * Cesta de Calabaza bonus
  *
  * @author Armando Maya y Jose M Coronado
+ *--------------------------------------------------------------------------
  */
 public class PumpkinBasket extends Actor {
 
@@ -94,12 +99,10 @@ public class PumpkinBasket extends Actor {
                     // Aumentamos la puntuacion del jugador
                     window.getPlayer().setClusterBombs(score);
                     deadBasket = true;
-                    WavPlayer.stop(window.GRITO_GRAVE);
                     WavPlayer.play(window.YEAH);
                 }
                 if (actor instanceof House) {
                     deadBasket = true;
-                    WavPlayer.stop(window.GRITO_GRAVE);
                     WavPlayer.play(window.OOOO);
                 }
 
@@ -120,6 +123,7 @@ public class PumpkinBasket extends Actor {
                 setVx(0);
                 setVy(200);
                 // Aumentamos el numero de veces q ha colisionado con el misil
+                // para que no se vuelva a recolocar
                 fallen++;
             }
         }

@@ -3,8 +3,13 @@ package net.ausiasmarch.ShadowNight.modelo;
 import java.util.List;
 
 /**
+ * -------------------------------------------------------------------------
+ * Curso Básico de desarrollo de VideoJuegos en Java 2D
+ * Smoke.java
+ * Humo de las casas
  *
- * @author Armando
+ * @author Armando Maya y Jose M Coronado
+ *--------------------------------------------------------------------------
  */
 public class Smoke extends Actor {
 
