@@ -7,6 +7,7 @@ package net.ausiasmarch.ShadowNight.gui;
  * @author Armando Maya y Jose M Coronado
  * ----------------------------------------------------------------------------
  */
+//import jaco.mp3.player.MP3Player;
 import jaco.mp3.player.MP3Player;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -24,6 +25,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +46,8 @@ public class ShadowNight extends Canvas implements GameWindow {
     private BufferStrategy strategy;
     /* El entorno grafico de aceleracion que nos pirmite dibujar*/
     private Graphics2D g2D;
+    /* Reproductor de Musica*/
+    private MP3Player mp3player;
     /* Lista de actores del juego */
     private List<Actor> actors = new ArrayList<>();
     /* Lista de los actores que deben borrarse del juego */
@@ -571,7 +575,7 @@ public class ShadowNight extends Canvas implements GameWindow {
         screen = ScreenStatus.GAME_OVER;
         timer.stop();
         contador = 60;
-        MP3Player.stop();
+        mp3player.stop();
         WavPlayer.play(PERDIDO);
     }
 
@@ -586,7 +590,7 @@ public class ShadowNight extends Canvas implements GameWindow {
         screen = ScreenStatus.GAME_OVER;
         timer.stop();
         contador = 60;
-        MP3Player.stop();
+        mp3player.stop();
         WavPlayer.play(GANADO);
     }
 
@@ -1151,7 +1155,10 @@ public class ShadowNight extends Canvas implements GameWindow {
     }
 
     private void playTheme(String theme) {
-        MP3Player.stop();
-        MP3Player.play(theme);
+        // Instancia de player
+        mp3player = new MP3Player();
+        mp3player.stop();
+        mp3player.addToPlayList(new File(theme));
+        mp3player.play();
     }
 }

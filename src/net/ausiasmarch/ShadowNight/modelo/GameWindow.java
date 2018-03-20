@@ -23,7 +23,7 @@ public interface GameWindow {
     public final int WIDTH_ = (int) (wSreen);    // Ancho de ventana
     public final int HEIGHT_ = (int) (hSreen);   // Alto de ventana   
     public final static String PATH_IMAGE = "res/image/"; // path imagenes 
-    public final static String PATH_MUSIC = "res/music/"; // path musica
+    public final static String PATH_MUSIC = "src/res/music/"; // path musica
     public final static String PATH_SOUND = "res/sound/"; // path sonidos
     public final String TITLE = "Shadow-Night";         // Titulo 
     // Fotogramas por seg del juego 
